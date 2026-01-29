@@ -19,7 +19,7 @@ Ovaj repozitorijum sadrži **projekat za detekciju anomalija** implementiran u *
 
 ---
 
-## 🧠 Šta radi ovaj projekt?
+## 🧠 Šta radi ovaj projekat?
 
 Projekat implementira **detektor anomalija u digitalnoj logici** koristeći VHDL. 
 Dizajn može uključivati logiku za **prepoznavanje neobičnih obrazaca** u ulaznim podacima (npr. signalima ili nizovima bitova).
