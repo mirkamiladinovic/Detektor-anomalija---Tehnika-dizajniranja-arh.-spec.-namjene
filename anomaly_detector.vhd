@@ -149,7 +149,7 @@ begin
 			-- množenje (13 * 8 → 21 bit)
 			mult_full := range_v * to_unsigned(ALPHA_NUM, 8);
 
-			-- shift pa DODELA (bez dodatnog resize-a)
+			-- shift pa DODJELA (bez dodatnog resize-a)
 			thresh_v  := shift_right(mult_full, ALPHA_SHIFT);
 
 
