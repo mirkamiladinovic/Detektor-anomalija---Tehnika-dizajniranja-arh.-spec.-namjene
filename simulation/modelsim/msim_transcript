@@ -1,0 +1,86 @@
+# Reading D:/altera/13.0sp1/modelsim_ase/tcl/vsim/pref.tcl 
+# do anomaly_detector_run_msim_rtl_vhdl.do 
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Copying D:\altera\13.0sp1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# ** Warning: Copied D:\altera\13.0sp1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini.
+#          Updated modelsim.ini.
+# 
+# vcom -93 -work work {D:/altera/13.0sp1/milena/anomaly_detector.vhd}
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity anomaly_detector
+# -- Compiling architecture rtl of anomaly_detector
+# 
+vcom -reportprogress 300 -work work D:/altera/13.0sp1/milena/anomaly_detector.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity anomaly_detector
+# -- Compiling architecture rtl of anomaly_detector
+vcom -reportprogress 300 -work work D:/altera/13.0sp1/milena/tb_anomaly_detector.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity tb_anomaly_detector
+# -- Compiling architecture sim of tb_anomaly_detector
+# -- Loading entity anomaly_detector
+vsim +altera -do anomaly_detector_run_msim_rtl_vhdl.do -l msim_transcript -gui work.tb_anomaly_detector
+# vsim +altera -do anomaly_detector_run_msim_rtl_vhdl.do -l msim_transcript -gui work.tb_anomaly_detector 
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_anomaly_detector(sim)
+# Loading work.anomaly_detector(rtl)
+# do anomaly_detector_run_msim_rtl_vhdl.do 
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Modifying modelsim.ini
+# 
+# vcom -93 -work work {D:/altera/13.0sp1/milena/anomaly_detector.vhd}
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity anomaly_detector
+# -- Compiling architecture rtl of anomaly_detector
+# 
+add wave -position insertpoint  \
+sim:/tb_anomaly_detector/clk \
+sim:/tb_anomaly_detector/rst \
+sim:/tb_anomaly_detector/sample_valid \
+sim:/tb_anomaly_detector/sample_in \
+sim:/tb_anomaly_detector/anomaly_flag
+# WARNING: No extended dataflow license exists
+
+
+
+run 2000 ns
+# ** Note: TEST 1: Normalno stanje (stabilno 120)
+#    Time: 130 ns  Iteration: 0  Instance: /tb_anomaly_detector
+# ** Note: TEST 2: Spori drift (100->200 kroz 50 uzoraka)
+#    Time: 1370 ns  Iteration: 0  Instance: /tb_anomaly_detector
+run 5000ns
+# ** Note: TEST 3: Anomalija (stabilno 100 pa skok na 500)
+#    Time: 3410 ns  Iteration: 0  Instance: /tb_anomaly_detector
+# ** Note: SVA 3 TESTA SU PROSLA.
+#    Time: 4730 ns  Iteration: 0  Instance: /tb_anomaly_detector
+run 10000ns
+run 8000ns
+run 3000ns

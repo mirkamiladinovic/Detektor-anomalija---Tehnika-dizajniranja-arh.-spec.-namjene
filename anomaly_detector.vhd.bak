@@ -1,0 +1,87 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity anomaly_detector is
+  generic (
+    N     : integer := 8;
+    WIDTH : integer := 12
+  );
+  port (
+    clk          : in  std_logic;
+    rst          : in  std_logic;
+    sample_valid : in  std_logic;
+    sample_in    : in  std_logic_vector(WIDTH-1 downto 0);
+    anomaly_flag : out std_logic
+  );
+end entity;
+
+architecture rtl of anomaly_detector is
+
+  type window_t is array (0 to N-1) of unsigned(WIDTH-1 downto 0);
+  signal window : window_t := (others => (others => '0'));
+
+begin
+
+  process(clk)
+    variable sum_v   : unsigned(WIDTH+8 downto 0);
+    variable avg_v   : unsigned(WIDTH-1 downto 0);
+    variable min_v   : unsigned(WIDTH-1 downto 0);
+    variable max_v   : unsigned(WIDTH-1 downto 0);
+    variable diff_v  : unsigned(WIDTH downto 0);
+    variable thresh  : unsigned(WIDTH downto 0);
+    variable x_new   : unsigned(WIDTH-1 downto 0);
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        window        <= (others => (others => '0'));
+        anomaly_flag  <= '0';
+
+      elsif sample_valid = '1' then
+        x_new := unsigned(sample_in);
+
+        -- sliding window
+        for i in N-1 downto 1 loop
+          window(i) <= window(i-1);
+        end loop;
+        window(0) <= x_new;
+
+        -- init
+        sum_v := (others => '0');
+        min_v := window(0);
+        max_v := window(0);
+
+        -- statistics
+        for i in 0 to N-1 loop
+          sum_v := sum_v + resize(window(i), sum_v'length);
+
+          if window(i) < min_v then
+            min_v := window(i);
+          end if;
+
+          if window(i) > max_v then
+            max_v := window(i);
+          end if;
+        end loop;
+
+        avg_v  := (sum_v / N)(WIDTH-1 downto 0);
+        thresh := ('0' & max_v) - ('0' & min_v);
+
+        -- |x - avg|
+        if x_new >= avg_v then
+          diff_v := ('0' & x_new) - ('0' & avg_v);
+        else
+          diff_v := ('0' & avg_v) - ('0' & x_new);
+        end if;
+
+        if diff_v > thresh then
+          anomaly_flag <= '1';
+        else
+          anomaly_flag <= '0';
+        end if;
+
+      end if;
+    end if;
+  end process;
+
+end architecture;
